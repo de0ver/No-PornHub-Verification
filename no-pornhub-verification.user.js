@@ -14,13 +14,17 @@
 // @grant           GM_addStyle
 // ==/UserScript==
 
-function autoplay(e) {
-    e.forEach(e => {
-        if (e.tagName == 'VIDEO') {
-          e.src = e.childNodes[1]?.dataset.src;
-          e.play();
-        }
-    });
+function autoplay(e) { //if mouseenter we get .target 1 element (video), not array, if touch, we get array
+    let el = e;
+    if (e.length) {
+        e.forEach(e => {
+            if (e.tagName == 'VIDEO') {
+                el = e;
+            }
+        });
+    }
+    el.src = el.childNodes[1]?.dataset.src;
+    el.play();
 }
 (function no_pornhub_verification() {
 	"use strict";
@@ -54,7 +58,7 @@ function autoplay(e) {
         i.remove();
     }
     for (let i of document.getElementsByClassName('absolute inset-0 h-full w-full rounded')) { //autoplay videos fix)))))
-        i.addEventListener("mouseenter", (e) => {autoplay(e)});
+        i.addEventListener("mouseenter", (e) => {autoplay(e.target)});
         i.parentElement.addEventListener("touchstart", (e) => {autoplay(e.target?.offsetParent.childNodes)});
     }
     document.body?.classList.remove('fixed', 'h-full', 'w-full'); //scroll fix
