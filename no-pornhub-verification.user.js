@@ -1,12 +1,13 @@
 // ==UserScript==
-// @name            No Pornhub Verificaiton
+// @name            No Pornhub Verificaiton & spankbang
 // @namespace       npv
-// @version         1.0.0
-// @description:ru  Удаляет проверку на возраст на сайте PornHub
-// @description     Removes age verification on the PornHub
+// @version         1.3.3.7
+// @description:ru  Удаляет проверку на возраст на сайте PornHub & Spankbang
+// @description     Removes age verification on the PornHub & spankbang
 // @author          https://github.com/MasedMSD
 // @match           *://*.pornhub.com/*
 // @match           *://*.pornhub.org/*
+// @match           *://*.spankbang.com/*
 // @icon            https://ei.phncdn.com/www-static/favicon.ico
 // @downloadURL     https://github.com/MasedMSD/No-PornHub-Verification/raw/refs/heads/main/no-pornhub-verification.user.js
 // @updateURL       https://github.com/MasedMSD/No-PornHub-Verification/raw/refs/heads/main/no-pornhub-verification.user.js
@@ -34,4 +35,18 @@
 	["container", "wrapper"].forEach(function (id) {
 		document.getElementById("age-verification-" + id)?.remove();
 	});
+
+    //spankbang
+    document.querySelectorAll('.strong-blur').forEach(el => {
+        el?.classList.remove('strong-blur');
+    });
+    document.getElementById('av-wrapper')?.remove();
+    document.getElementById('safety-blur')?.remove();
+    for (let i of document.getElementsByClassName('absolute inset-0 z-10 flex items-center justify-center')) {
+        i.remove();
+    }
+    document.body?.classList.remove('fixed', 'h-full', 'w-full'); //scroll fix
+
+    //video autoplay on hover not fixed :/
+    setTimeout(() => {no_pornhub_verification()}, 1000);
 })();
