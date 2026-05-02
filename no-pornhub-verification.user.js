@@ -14,6 +14,14 @@
 // @grant           GM_addStyle
 // ==/UserScript==
 
+function autoplay(e) {
+    e.forEach(e => {
+        if (e.tagName == 'VIDEO') {
+          e.src = e.childNodes[1]?.dataset.src;
+          e.play();
+        }
+    });
+}
 (function no_pornhub_verification() {
 	"use strict";
 	document.getElementsByClassName("ageDisclaimer")[0]?.remove();
@@ -45,8 +53,11 @@
     for (let i of document.getElementsByClassName('absolute inset-0 z-10 flex items-center justify-center')) {
         i.remove();
     }
+    for (let i of document.getElementsByClassName('absolute inset-0 h-full w-full rounded')) { //autoplay videos fix)))))
+        i.addEventListener("mouseenter", (e) => {autoplay(e)});
+        i.parentElement.addEventListener("touchstart", (e) => {autoplay(e.target?.offsetParent.childNodes)});
+    }
     document.body?.classList.remove('fixed', 'h-full', 'w-full'); //scroll fix
 
-    //video autoplay on hover not fixed :/
     setTimeout(() => {no_pornhub_verification()}, 1000);
 })();
